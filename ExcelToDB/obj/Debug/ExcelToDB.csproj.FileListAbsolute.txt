@@ -1,0 +1,10 @@
+C:\Users\XCode\source\repos\ExcelToDB\ExcelToDB\obj\Debug\ExcelToDB.csprojAssemblyReference.cache
+C:\Users\XCode\source\repos\ExcelToDB\ExcelToDB\obj\Debug\ExcelToDB.csproj.CoreCompileInputs.cache
+C:\Users\XCode\source\repos\ExcelToDB\ExcelToDB\bin\Debug\ExcelToDB.exe.config
+C:\Users\XCode\source\repos\ExcelToDB\ExcelToDB\bin\Debug\ExcelToDB.exe
+C:\Users\XCode\source\repos\ExcelToDB\ExcelToDB\bin\Debug\ExcelToDB.pdb
+C:\Users\XCode\source\repos\ExcelToDB\ExcelToDB\bin\Debug\Microsoft.Office.Interop.Excel.dll
+C:\Users\XCode\source\repos\ExcelToDB\ExcelToDB\bin\Debug\stdole.dll
+C:\Users\XCode\source\repos\ExcelToDB\ExcelToDB\obj\Debug\ExcelToDB.csproj.CopyComplete
+C:\Users\XCode\source\repos\ExcelToDB\ExcelToDB\obj\Debug\ExcelToDB.exe
+C:\Users\XCode\source\repos\ExcelToDB\ExcelToDB\obj\Debug\ExcelToDB.pdb

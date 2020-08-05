@@ -1,15 +1,20 @@
-﻿using Microsoft.Office.Interop.Excel;
-using System;
-using System.Data;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
-using System.Text;
-using DataTable = System.Data.DataTable;
-using Excel = Microsoft.Office.Interop.Excel;
-
-namespace ExcelToDB
+﻿namespace ExcelToDB
 {
+    using Microsoft.Office.Interop.Excel;
+    using MySql.Data.MySqlClient;
+    using System;
+    using System.Data;
+    using System.Data.SqlClient;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Reflection;
+    using System.Text;
+    using DataTable = System.Data.DataTable;
+    using Excel = Microsoft.Office.Interop.Excel;
+
+    /// <summary>
+    /// Defines the <see cref="ExcelHelper" />.
+    /// </summary>
     public class ExcelHelper
     {
         /// <summary>
@@ -78,6 +83,7 @@ namespace ExcelToDB
                                 columnCount = tableHead.Length;
                                 for (int i = 0; i < columnCount; i++)
                                 {
+
                                     DataColumn dc = new DataColumn(tableHead[i]);
                                     dt.Columns.Add(dc);
                                 }
@@ -113,24 +119,70 @@ namespace ExcelToDB
         }
 
         /// <summary>
-        /// The ForDataTable.
+        /// 转换成和数据库一致的datatable
         /// </summary>
-        /// <param name="tb">The tb<see cref="DataTable"/>.</param>
-        public static void ForDataTable(DataTable tb)
+        /// <param name="tb"></param>
+        /// <returns></returns>
+        private DataTable ConvertDatatTableForDB(DataTable tb)
         {
+            DataTable dt = new DataTable();
             try
             {
-
-                foreach (DataRow raw in tb.Rows)
+                dt = tb.Clone();
+                foreach (DataColumn col in dt.Columns)
                 {
-
+                    switch (col.ColumnName)
+                    {
+                        case "data_value":
+                            col.DataType = typeof(string);
+                            break;
+                    }
                 }
+
+                foreach (DataRow row in tb.Rows)
+                {
+                    DataRow new_row = dt.NewRow();
+                    new_row["data_value"] = row["data_value"];
+
+                    dt.Rows.Add(new_row);
+                }
+
+                return dt;
             }
             catch (Exception ex)
             {
 
             }
+
+            return null;
         }
+
+
+        public static int SqlBulkCopyInsert(string conStr, string csv_path)
+        {
+            int result = 0;
+            try
+            {
+                using (MySqlConnection con = new MySqlConnection(conStr))
+                {
+                    con.Open();
+                    if (csv_path.Contains("\\t"))
+                    {
+                        csv_path = csv_path.Replace("\\t", "\\\\t");
+                    }
+                    string query = $"LOAD DATA INFILE \"{csv_path}\" INTO TABLE excel_data_db.exceldata;";
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+
+            return result;
+        }
+
 
         /// <summary>
         /// The DeleteFile.
